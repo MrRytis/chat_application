@@ -7,6 +7,7 @@ use App\Builder\SimpleChatBuilder;
 use App\DTO\ChatDTO;
 use App\DTO\StatusDTO;
 use App\Entity\Chat;
+use App\Entity\ChatUser;
 use App\Entity\User;
 use App\Exception\ChatException;
 use App\Request\ChatRequest;
@@ -44,11 +45,19 @@ class ChatController extends AbstractFOSRestController
             ->getAllUsersChats($this->getUser()->getId(), $request->query->get('limit', 20));
 
         $chatDTO = [];
+        $userId = $this->getUser()->getId();
         foreach ($chats as $chat) {
+            /** @var ChatUser $chatUser */
+            $chatUser = $chat->getChatUsers()->filter(function (ChatUser $chatUser) use ($userId) {
+                return $chatUser->getUser()->getId() === $userId ? $chatUser : null;
+            })->first();
+
             $chatDTO[] = (new ChatDTO())
                 ->setId($chat->getId())
                 ->setTitle($chat->getTitle())
-                ->setCreated($chat->getCreated());
+                ->setCreated($chat->getCreated())
+                ->setLastMessage($chat->getMessages()->last()->getText())
+                ->setNotificationCount($chatUser->getNotifications()->count());
         }
 
         return $this->view($chatDTO);

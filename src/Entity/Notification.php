@@ -19,7 +19,7 @@ class Notification
     private int $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Message")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Message")
      */
     private Message $message;
 
@@ -29,7 +29,7 @@ class Notification
     private bool $read;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ChatUser")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ChatUser")
      */
     private ChatUser $chatUser;
 
