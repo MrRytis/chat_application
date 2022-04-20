@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ChatUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ChatUserRepository::class)
@@ -37,6 +38,12 @@ class ChatUser
      * @ORM\ManyToOne(targetEntity="App\Entity\Chat", inversedBy="chatUsers")
      */
     private Chat $chat;
+
+    /**
+     * @var PersistentCollection
+     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="chatUser", fetch="EXTRA_LAZY")
+     */
+    private PersistentCollection $notifications;
 
     public function __construct()
     {
@@ -99,6 +106,18 @@ class ChatUser
     public function setChat(Chat $chat): self
     {
         $this->chat = $chat;
+
+        return $this;
+    }
+
+    public function getNotifications(): PersistentCollection
+    {
+        return $this->notifications;
+    }
+
+    public function setNotifications(PersistentCollection $notifications): self
+    {
+        $this->notifications = $notifications;
 
         return $this;
     }

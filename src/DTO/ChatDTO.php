@@ -7,6 +7,8 @@ class ChatDTO
     private int $id;
     private string $title;
     private \DateTime $created;
+    private int $notificationCount;
+    private string $lastMessage;
 
     public function getId(): int
     {
@@ -40,6 +42,30 @@ class ChatDTO
     public function setCreated(\DateTime $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getNotificationCount(): int
+    {
+        return $this->notificationCount;
+    }
+
+    public function setNotificationCount(int $notificationCount): self
+    {
+        $this->notificationCount = $notificationCount;
+
+        return $this;
+    }
+
+    public function getLastMessage(): string
+    {
+        return $this->lastMessage;
+    }
+
+    public function setLastMessage(string $lastMessage): self
+    {
+        $this->lastMessage = $lastMessage;
 
         return $this;
     }
